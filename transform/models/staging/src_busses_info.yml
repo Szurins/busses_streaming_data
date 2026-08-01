@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: busses_info
+    database: busses_stream
+    schema: ingestion
+    tables:
+      - name: ingestion_busses
