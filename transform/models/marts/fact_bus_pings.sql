@@ -1,4 +1,4 @@
-{{ config(materialized='streaming_table') }}
+{{ config(materialized='incremental') }}
 
 select
     -- Primary Keys
@@ -30,4 +30,8 @@ select
     -- Metadata
     ping_at,
     ingested_at
-from STREAM({{ ref('int_busses_cleaned') }})
+from {{ ref('int_busses_cleaned') }}
+
+{% if is_incremental() %}
+    where ingested_at > (select max(ingested_at) from {{ this }})
+{% endif %}
