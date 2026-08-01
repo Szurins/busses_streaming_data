@@ -1,39 +1,29 @@
-with source as (
-    select * from {{ source('busses_info', 'ingestion_busses') }}
-),
-
-renamed_and_casted as (
-
-    select
-        concat(cast(vehicleId as string), '_', cast(lastPingDate as string)) as vehicle_ping_id,
-        cast(vehicleId as string)                      as vehicle_id,
-        cast(courseLoid as bigint)                     as course_loid,
-        cast(dayCourseLoid as bigint)                  as day_course_loid,
-        cast(externalCourseLoid as string)             as external_course_loid,
-        cast(variantLoid as bigint)                    as variant_loid,
-        cast(lineName as string)                       as line_name,
-        cast(operator as string)                       as operator_code,
-        cast(direction as string)                      as direction_name,
-        cast(optionalDirection as string)              as optional_direction_name,
-        cast(latitude as double)                       as latitude,
-        cast(longitude as double)                      as longitude,
-        cast(angle as integer)                         as heading_degrees,
-        cast(delaySec as integer)                      as delay_seconds,
-        cast(reachedMeters as integer)                 as reached_meters,
-        cast(orderInCourse as integer)                 as order_in_course,
-        cast(lastStopSymbol as string)                 as last_stop_symbol,
-        cast(lastStopOrderNo as integer)               as last_stop_order_no,
-        cast(nearestSymbol as string)                  as nearest_stop_symbol,
-        cast(nearestSymbolOrderNo as integer)          as nearest_stop_order_no,
-        cast(distanceFromPassedStopPoint as integer)   as distance_from_passed_stop_m,
-        cast(distanceToNearestStopPoint as integer)    as distance_to_nearest_stop_m,
-        cast(onStopPoint as string)                    as on_stop_point_symbol,
-        stopPoints                                     as stop_points_raw,
-        to_timestamp(lastPingDate / 1000)              as ping_at,
-        _ingested_at                                   as ingested_at,
-        _source_system                                 as source_system
-    from source
-
-)
-
-select * from renamed_and_casted
+select
+    concat(cast(vehicleId as string), '_', cast(lastPingDate as string)) as vehicle_ping_id,
+    cast(vehicleId as string)                      as vehicle_id,
+    cast(courseLoid as bigint)                     as course_loid,
+    cast(dayCourseLoid as bigint)                  as day_course_loid,
+    cast(externalCourseLoid as string)             as external_course_loid,
+    cast(variantLoid as bigint)                    as variant_loid,
+    cast(lineName as string)                       as line_name,
+    cast(operator as string)                       as operator_code,
+    cast(direction as string)                      as direction_name,
+    cast(optionalDirection as string)              as optional_direction_name,
+    cast(latitude as double)                       as latitude,
+    cast(longitude as double)                      as longitude,
+    cast(angle as integer)                         as heading_degrees,
+    cast(delaySec as integer)                      as delay_seconds,
+    cast(reachedMeters as integer)                 as reached_meters,
+    cast(orderInCourse as integer)                 as order_in_course,
+    cast(lastStopSymbol as string)                 as last_stop_symbol,
+    cast(lastStopOrderNo as integer)               as last_stop_order_no,
+    cast(nearestSymbol as string)                  as nearest_stop_symbol,
+    cast(nearestSymbolOrderNo as integer)          as nearest_stop_order_no,
+    cast(distanceFromPassedStopPoint as integer)   as distance_from_passed_stop_m,
+    cast(distanceToNearestStopPoint as integer)    as distance_to_nearest_stop_m,
+    cast(onStopPoint as string)                    as on_stop_point_symbol,
+    stopPoints                                     as stop_points_raw,
+    to_timestamp(lastPingDate / 1000)              as ping_at,
+    _ingested_at                                   as ingested_at,
+    _source_system                                 as source_system
+from {{ source('busses_info', 'ingestion_busses') }}

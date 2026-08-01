@@ -33,7 +33,7 @@ models:
   transform:
     staging:
       +materialized: view
-    # intermediate:
-    #   +materialized: view
-    # marts:
-    #   +materialized: incremental
+    intermediate:
+      +materialized: view
+    marts:
+      +materialized: streaming_table
